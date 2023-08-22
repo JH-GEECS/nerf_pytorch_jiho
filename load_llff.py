@@ -239,15 +239,17 @@ def spherify_poses(poses, bds):
     
     return poses_reset, new_poses, bds
     
-
+# todo 여기 분석 필요
 def load_llff_data(basedir, factor=8, recenter=True, bd_factor=.75, spherify=False, path_zflat=False):
-    
+    # factor가 downsampling rate를 의미하는 것이었다.
 
     poses, bds, imgs = _load_data(basedir, factor=factor) # factor=8 downsamples original imgs by 8x
     print('Loaded', basedir, bds.min(), bds.max())
     
     # Correct rotation matrix ordering and move variable dim to axis 0
     poses = np.concatenate([poses[:, 1:2, :], -poses[:, 0:1, :], poses[:, 2:, :]], 1)
+    # 여기서 왜 또 바꾸냐 ㅋㅋㅋ
+    #
     poses = np.moveaxis(poses, -1, 0).astype(np.float32)
     imgs = np.moveaxis(imgs, -1, 0).astype(np.float32)
     images = imgs
